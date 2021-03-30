@@ -21,7 +21,7 @@ def havingIp(url):
 
 #3
 def havingAtSign(url):
-    return '@' in url    # False if @ not not present else True 
+    return 1 if '@' in url else 0    # 0 if @ not not present else True 
 
 #4
 def urlLengthFactor(url):
@@ -38,7 +38,7 @@ def urlLengthFactor(url):
 #5
 def getDepth(url):
     url_path=urlparse(url).path
-    print(url_path)
+    #print(url_path)
     url_parts=url_path.split('/')
     url_depth=0
     
@@ -66,11 +66,11 @@ def reDirection(url):
 #7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain) 
 
 def httpDomain(url):
-  domain = urlparse(url).netloc
-  if 'https' in domain:
-    return 1
-  else:
-    return 0
+    domain = urlparse(url).netloc
+    if 'https' in domain:
+        return 1
+    else:
+        return 0
 
 
 #listing shortening services
@@ -99,7 +99,7 @@ def prefixSuffix(url):
         return 1            # phishing
     else:
         return 0            # legitimate
-    print(urlparse(url).netloc)
+    #print(urlparse(url).netloc)
 #example- tinyURL("https://bit-ly.com/") return 1
 
 # 10. Whether domain is registered or not 
@@ -107,16 +107,16 @@ def is_registered(domain_name):
     try:
         w = whois.whois(domain_name)
     except Exception:
-        return False
-    else:
-        return bool(w.domain_name)
+        return 0
+    
+    return 1 if bool(w.domain_name) else 0
    
 # 11. To get domain object
 def domain_object(domain_name):
     if is_registered(domain_name):
         whois_info = whois.whois(domain_name)
         return whois_info
-    
+    return None
     
 """#### **Age of Domain**
 
@@ -125,26 +125,33 @@ This feature can be extracted from WHOIS database. Most phishing websites live f
 If age of domain > 12 months, the vlaue of this feature is 1 (phishing) else 0 (legitimate).
 """
 # 12.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
-def domainAge(domain_name):
-  creation_date = domain_name.creation_date
-  expiration_date = domain_name.expiration_date
-  if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
+def domainAge(domain_object):
+    #print(domain_object)
+    if domain_object==None:
+        return 1
     try:
-      creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
-      expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
+        creation_date = domain_object.creation_date
+        expiration_date = domain_object.expiration_date
     except:
-      return 1
-  if ((expiration_date is None) or (creation_date is None)):
-      return 1
-  elif ((type(expiration_date) is list) or (type(creation_date) is list)):
-      return 1
-  else:
-    ageofdomain = abs((expiration_date - creation_date).days)
-    if ((ageofdomain/30) < 6):
-      age = 1
+        return 1
+        
+    if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
+        try:
+            creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
+        except:
+            return 1
+    if ((expiration_date is None) or (creation_date is None)):
+        return 1
+    elif ((type(expiration_date) is list) or (type(creation_date) is list)):
+        return 1
     else:
-      age = 0
-  return age
+        ageofdomain = abs((expiration_date - creation_date).days)
+        if ((ageofdomain/30) < 6):
+            age = 1
+        else:
+            age = 0
+    return age
 
 """#### **End Period of Domain??????????**
 
@@ -154,25 +161,30 @@ If end period of domain > 6 months, the vlaue of this feature is 1 (phishing) el
 """
 
 # 14.End time of domain: The difference between termination time and current time (Domain_End) 
-def domainEnd(domain_name):
-  expiration_date = domain_name.expiration_date
-  if isinstance(expiration_date,str):
+def domainEnd(domain_object):
+    if domain_object==None:
+        return 1
     try:
-      expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
+        expiration_date = domain_object.expiration_date
     except:
-      return 1
-  if (expiration_date is None):
-      return 1
-  elif (type(expiration_date) is list):
-      return 1
-  else:
-    today = datetime.now()
-    end = abs((expiration_date - today).days)
-    if ((end/30) < 6):
-      end = 0
+        return 1
+    if isinstance(expiration_date,str):
+        try:
+            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
+        except:
+            return 1
+    if (expiration_date is None):
+        return 1
+    elif (type(expiration_date) is list):
+        return 1
     else:
-      end = 1
-  return end
+        today = datetime.now()
+        end = abs((expiration_date - today).days)
+        if ((end/30) < 6):
+            end = 0
+        else:
+            end = 1
+    return end
 
 """## **3.HTML and JavaScript based Features**
 
@@ -197,13 +209,13 @@ If the iframe is empty or repsonse is not found then, the value assigned to this
 
 # 15. IFrame Redirection (iFrame)
 def iframe(response):
-  if response == "":
-      return 1
-  else:
-      if re.findall(r"[<iframe>|<frameBorder>]", response.text):
-          return 0
-      else:
-          return 1
+    if response == "":
+        return 1
+    else:
+        if re.findall(r"[<iframe>|<frameBorder>]", response.text):
+            return 0
+        else:
+            return 1
 """### **Status Bar Customization**
 
 Phishers may use JavaScript to show a fake URL in the status bar to users. To extract this feature, we must dig-out the webpage source code, particularly the “onMouseOver” event, and check if it makes any changes on the status bar
@@ -213,13 +225,13 @@ If the response is empty or onmouseover is found then, the value assigned to thi
 
 # 16.Checks the effect of mouse over on status bar (Mouse_Over)
 def mouseOver(response): 
-  if response == "" :
-    return 1
-  else:
-    if re.findall("<script>.+onmouseover.+</script>", response.text):
-      return 1
+    if response == "" :
+        return 1
     else:
-      return 0
+        if re.findall("<script>.+onmouseover.+</script>", response.text):
+            return 1
+        else:
+            return 0
 
 """### **Disabling Right Click**
 
@@ -230,13 +242,13 @@ If the response is empty or onmouseover is not found then, the value assigned to
 
 # 17.Checks the status of the right click attribute (Right_Click)
 def rightClick(response):
-  if response == "":
-    return 1
-  else:
-    if re.findall(r"event.button ?== ?2", response.text):
-      return 0
+    if response == "":
+        return 1
     else:
-      return 1
+        if re.findall(r"event.button ?== ?2", response.text):
+            return 0
+        else:
+            return 1
 
 """### ** Website Forwarding**
 The fine line that distinguishes phishing websites from legitimate ones is how many times a website has been redirected. In our dataset, we find that legitimate websites have been redirected one time max. On the other hand, phishing websites containing this feature have been redirected at least 4 times.
@@ -244,13 +256,23 @@ The fine line that distinguishes phishing websites from legitimate ones is how m
 
 # 18.Checks the number of forwardings (Web_Forwards)    
 def forwarding(response):
-  if response == "":
-    return 1
-  else:
-    if len(response.history) <= 2:
-      return 0
+    if response == "":
+        return 1
     else:
-      return 1
+        if len(response.history) <= 2:
+            return 0
+        else:
+            return 1
 
-def extractFeatures(url,label):
-    return [i for i in range(18)]
+def extractFeatures(url):
+    try:
+        response = requests.get(url)
+    except:
+        response = ""
+        
+        
+    return [getDomain(url) , havingIp(url) , havingAtSign(url) , urlLengthFactor(url) ,getDepth(url) , reDirection(url) , httpDomain(url) ,tinyURL(url) , prefixSuffix(url) , is_registered(getDomain(url)) , domainAge(domain_object(getDomain(url))) , domainEnd(domain_object(getDomain(url))) , iframe(response) , mouseOver(response) , rightClick(response) , forwarding(response) ]
+
+
+
+
