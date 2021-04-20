@@ -7,34 +7,53 @@ Original file is located at
     https://colab.research.google.com/drive/10MvYmVDv4lliFxJ7mGr-WDnI8pktadLB
 """
 
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
+import joblib
+import time
+from sklearn.model_selection import train_test_split
 
-data0=pd.read_csv('urldata.csv')
-data=data0.drop(['Domain'],axis=1).copy()
-y=data['Label']
-X=data.drop('Label',axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, 
-                                                    test_size = 0.2, random_state = 12)
-X_train.shape, X_test.shape
+def svm_fun(x_train, x_test, y_train, y_test):
 
-#svm 
-svm = SVC(kernel='linear', C=1.0, random_state=12)
-#fit the model
-svm.fit(X_train, y_train)
+    svm = SVC(kernel='linear', C=1.0, random_state=12)
+    # fit the model
+    svm.fit(x_train, y_train)
 
-#predicting the target value from the model for the samples
-y_test_svm = svm.predict(X_test)
-y_train_svm = svm.predict(X_train)
+    # predicting the target value from the model for the samples
 
-acc_train_svm = accuracy_score(y_train,y_train_svm)
-acc_test_svm = accuracy_score(y_test,y_test_svm)
+    start = time.time()
+    y_test_svm = svm.predict(x_test)
+    stop = time.time()
 
-print("SVM: Accuracy on training Data: {:.3f}".format(acc_train_svm))
-print("SVM : Accuracy on test Data: {:.3f}".format(acc_test_svm))
+    y_train_svm = svm.predict(x_train)
+
+    acc_train_svm = accuracy_score(y_train, y_train_svm)
+    acc_test_svm = accuracy_score(y_test, y_test_svm)
+
+    print("SVM: Accuracy on training Data: {:.3f}".format(acc_train_svm))
+    print("SVM : Accuracy on test Data: {:.3f}".format(acc_test_svm))
+
+
+
+
+    #print(acc_test_svm, (stop - start) * 1000)
+
+    joblib.dump(svm, 'MODELS/svm.pkl')
+
+    details = "Support Vector Machine \t" + str(acc_test_svm*100) + "\t" + str((stop - start) * 1000) + "ms\n"
+
+    f = open("model_details.txt", "a")
+    f.write(details)
+    f.close()
+
+def models(x, y):
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+    svm_fun(x_train, x_test, y_train, y_test)
+
+
+
+
+
+
+

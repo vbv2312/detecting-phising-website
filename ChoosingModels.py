@@ -14,8 +14,9 @@ data_urls = pd.read_csv("urldata.csv")
 dataset = data_urls.drop('Domain', 1)  # removing unwanted column
 
 x = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, -1:].values
+y = dataset.iloc[:, -1].values
 
 import MODELS.LinearRegression as linearRegression
-
+import MODELS.SimpleVectorMachine as svm
 linearRegression.models(x, y)
+svm.models(x,y)

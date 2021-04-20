@@ -11,13 +11,18 @@ def predict():
         myurl = request.args.get('url')
 
     print(myurl)
-    result = Predictor.predict(myurl)
-    if result == 0:
-        ans = "Legitimate"
+    result1,result2 = Predictor.predict(myurl)
+    if result1 == 0:
+        ans1 = "Legitimate"
     else:
-        ans = "Phishing"
+        ans1 = "Phishing"
 
-    return "<h1>Results</h1><h2>MY URL " +myurl+ " is :</h2><h2>" + ans +"</h2>"
+    if result2 == 0:
+        ans2 = "Legitimate"
+    else:
+        ans2 = "Phishing"
+
+    return "<div> <h1>Results</h1><h2>MY URL " +myurl+ " is :</h2><h2> Acc. to Model 1 :" + ans1 +"</h2><h2> Acc. to Model 2 :" + ans2 +"</h2></div>"
 
 
 if __name__ == "__main__":
