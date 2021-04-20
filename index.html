@@ -1,15 +1,68 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-  </head>
-<body>
-  <h1 id="title">Phishing Website Detection</h1>
-  <form action="http://localhost:5000/predict" method="POST">
-    <p><h2>ENTER THE URL</h2></p>
-    <p><input type="text" name="url" size="80" /></p>
-    <p><input type="submit" value="check"/></p>
+<!DOCTYPE html>
+<html>
+<!--======================== head ============================-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  </form>
+<title>Phishing Detection Tool</title>
+
+<!--======================== CSS & Fonts ============================-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/styles.css" type="text/css" />
+
+
+</head>
+<body>
+    <div class="main-bg">
+        <section class="center-content">
+            <header>
+                <h1 class="banner">
+                    PHISHING DETECTION TOOL
+                </h1>
+            </header>
+            <div class="search-engine-wrapper">
+                <form id="search-form" autocomplete="off" action="http://localhost:5000/predict" method="POST"> <!--action="search-engine-process.php">-->
+                    <fieldset>
+                        <button class="search-btn large-scr" type="submit">Check</button>
+                        <div class="search-input-wrapper">
+                            <input class="search-input" type="text" name="url" id="recherche" placeholder="Enter a URL to check for phishing" />
+                            <div class="search-error"></div>
+                            <p id="empty-message"></p>
+                            <div class="autocomplete-message"></div>
+                        </div>
+                        <button class="search-btn small-scr" type="submit">Check</button>
+                        <span class="arrow"></span>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+
+        <footer class="footer">
+            <button type="button" class="mobile-nav-btn">
+                <span></span>
+            </button>
+            <nav>
+                <ul class="main-nav">
+
+                    <li>
+                        <a data-popup-btn="CONTACT US" class="sliding-middle-out popup-button" href="phishing-directory">Contact Us</a>
+                    </li>
+                    <li>
+                        <a data-popup-btn="ABOUT US" class="sliding-middle-out popup-button" href="about">About Us</a>
+                    </li>
+                    <li>
+                        <a data-popup-btn="TERMS AND CONDITIONS" class="sliding-middle-out popup-button" href="terms-of-use">Terms and Conditions</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </footer>
+
+    </div>
+
 </body>
 </html>
