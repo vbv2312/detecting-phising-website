@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e16a7856-009a-43cf-ad23-a1359a2f5d5d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/detecting-phising-website.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Choosing Models (Accuracy and Delays)-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/ConvertingDatasets-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/FeatureExtraction-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled1-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChoosingModels.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChoosingModels.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChoosingModels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConvertingDatasets.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FeatureExtraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/FeatureExtraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/LinearRegression.py" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/LinearRegression.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/logistic_model.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/logistic_model.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MODELS/svm.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/MODELS/svm.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyWebsite.py" beforeDir="false" afterPath="$PROJECT_DIR$/MyWebsite.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Predictor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Untitled.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Untitled1.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/FeatureExtraction.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/Predictor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/data/answer.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/data/name.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/js/ajax-utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Website/js/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/answer.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index2.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/legitimate.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/list_of_raw_legitimate_webites.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/list_of_raw_phishing_websites.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_details.txt" beforeDir="false" afterPath="$PROJECT_DIR$/model_details.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phishing.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/urldata.csv" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1qYpZMDvK0lf1hjJDwxBHXzzB7i" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/venv" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\detecting-phising-website\venv" />
+      <recent name="C:\Users\DELL\Desktop\detecting-phising-website\venv\Scripts" />
+      <recent name="C:\Users\DELL\Desktop\detecting-phising-website" />
+      <recent name="C:\Users\DELL\Desktop\detecting-phising-website\Website" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\detecting-phising-website\templates" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.Predictor">
+    <configuration name="MyWebsite" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="detecting-phising-website" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/MyWebsite.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Predictor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="detecting-phising-website" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Predictor.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Predictor" />
+        <item itemvalue="Python.MyWebsite" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e16a7856-009a-43cf-ad23-a1359a2f5d5d" name="Default Changelist" comment="" />
+      <created>1617266449398</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1617266449398</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

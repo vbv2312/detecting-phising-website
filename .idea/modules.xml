@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/detecting-phising-website.iml" filepath="$PROJECT_DIR$/.idea/detecting-phising-website.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/detecto-new.iml" filepath="$PROJECT_DIR$/.idea/detecto-new.iml" />
     </modules>
   </component>
 </project>
