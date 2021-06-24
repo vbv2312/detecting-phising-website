@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<!--======================== head ============================-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phishing Detection Tool - Results</title>
+
+<!--======================== CSS & Fonts ============================-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename = '/css/styles.css') }}" type="text/css" />
+
+
+</head>
+<body>
+    <div class="unsafe-bg">
+        <section class="center-content">
+            <header>
+                <h1 class="banner">
+                    RESULTS:
+                </h1>
+                <div>
+                <h2 class="unsafe-result" align="left">Website "{{url}}"<br> Not very Safe to use and is detected as Phishing website.</h2>
+                <h2 style="color:#ff0000">*Use at your own Risk</h2>
+                </div>
+            </header>
+            
+        </section>
+        
+
+        
+        <footer class="footer">
+            <button type="button" class="mobile-nav-btn">
+                <span></span>
+            </button>
+            <nav>
+                <ul class="main-nav">
+                    
+                    <li>
+                        <a data-popup-btn="CONTACT US" class="sliding-middle-out popup-button" href="phishing-directory">Contact Us</a>
+                    </li>
+                    <li>
+                        <a data-popup-btn="ABOUT US" class="sliding-middle-out popup-button" href="about">About Us</a>
+                    </li>
+                    <li>
+                        <a data-popup-btn="TERMS AND CONDITIONS" class="sliding-middle-out popup-button" href="terms-of-use">Terms and Conditions</a>
+                    </li>              
+                </ul>
+            </nav>
+	   
+        </footer>
+        
+    </div>
+
+</body>
+</html>
+

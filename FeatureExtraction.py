@@ -1,82 +1,36 @@
+# -*- coding: utf-8 -*-
 
-from urllib.parse import urlparse  # Used in 1,5,7
-import re  # Used in 2,8 -- Regular expression operations
-import datetime
-import whois
+import regex
+from tldextract import extract
+import ssl
+import socket
+from bs4 import BeautifulSoup
+import urllib.request
+import re
 from datetime import datetime
+import ipaddress
+from urllib.request import urlopen
+import requests
 
-#1
-def getDomain(url):
-    result= urlparse(url)
-    
-    domain = result.netloc
-    
-    if "www." in domain:
-        domain.replace("www.","")
-    
-    return domain
 
-#2
-def havingIp(url):
-    if re.match(r"http://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.*" , url ):
-        return 1
-    return 0   
+def url_having_ip(url):
+    try:
+        ipaddress.ip_address(url)
+        ip = 1
+    except:
+        ip = 0
+    return ip
 
-#3
-def havingAtSign(url):
-    return 1 if '@' in url else 0    # 0 if @ not not present else True 
 
-#4
-def urlLengthFactor(url):
-    url_length = len(url)
-    if url_length<54:
+def url_length(url):
+    length = len(url)
+    if length < 54:
+        return -1
+    elif 54 <= length <= 75:
         return 0
-    
-    elif 54<=url_length<=75:
-        return 1
-    
-    return 2     # 0 -> legitimate 1->suspicious  2->Phishing
-
-
-#5
-def getDepth(url):
-    url_path=urlparse(url).path
-    #print(url_path)
-    url_parts=url_path.split('/')
-    url_depth=0
-    
-    for i in url_parts:
-        if i!="" :
-            url_depth+=1
-    
-    return url_depth            # Return the depth of url using no. of subdirectory in url path
-
-
-#6
-def reDirection(url):
-    pos = url.rfind("//")    #Finds last occurence of // in url
-    
-    if pos<7:
-        return 0
-    
-    if url[:5].upper()=="HTTPS" and pos==7:
-        return 0
-    
-    return 1    # only 1 // must be present and that only at index less than 7
-
-
-
-#7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain) 
-
-def httpDomain(url):
-    domain = urlparse(url).netloc
-    if 'https' in domain:
-        return 1
     else:
-        return 0
+        return 1
 
-
-#listing shortening services
 shortening_services = r"bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|" \
                       r"yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|" \
                       r"short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|" \
@@ -86,149 +40,291 @@ shortening_services = r"bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|
                       r"prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|" \
                       r"tr\.im|link\.zip\.net"
 
-# 8. Checking for Shortening Services in URL (Tiny_URL)
-def tinyURL(url):
-    match=re.search(shortening_services,url)
+def url_short(url):
+    match = re.search(shortening_services, url)
     if match:
         return 1
     else:
         return 0
-#example- tinyURL("https://bitly.com/") return 1
 
 
-# 9.Checking for Prefix or Suffix Separated by (-) in the Domain (Prefix/Suffix)
-def prefixSuffix(url):
-    if '-' in urlparse(url).netloc:
-        return 1            # phishing
+def having_at_symbol(url):
+    symbol = regex.findall(r'@', url)
+    if (len(symbol) == 0):
+        return -1
     else:
-        return 0            # legitimate
-    #print(urlparse(url).netloc)
-#example- tinyURL("https://bit-ly.com/") return 1
+        return 1
 
-# 10. Whether domain is registered or not 
-def is_registered(domain_name):
-    try:
-        w = whois.whois(domain_name)
-    except Exception:
+
+def doubleSlash(url):
+    pos = url.rfind("//")  # Finds last occurence of // in url
+
+    if pos < 7:
         return 0
-    
-    return 1 if bool(w.domain_name) else 0
-   
-# 11. To get domain object
-def domain_object(domain_name):
-    if is_registered(domain_name):
-        whois_info = whois.whois(domain_name)
-        return whois_info
-    return None
-    
-"""#### **Age of Domain**
 
-This feature can be extracted from WHOIS database. Most phishing websites live for a short period of time. The minimum age of the legitimate domain is considered to be 12 months for this project. Age here is nothing but different between creation and expiration time.
+    if url[:5].upper() == "HTTPS" and pos == 7:
+        return 0
 
-If age of domain > 12 months, the vlaue of this feature is 1 (phishing) else 0 (legitimate).
-"""
-# 12.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
-def domainAge(domain_object):
-    #print(domain_object)
-    if domain_object==None:
+    return 1  # only 1 // must be present and that only at index less than 7
+
+
+def prefix_suffix(url):
+    subDomain, domain, suffix = extract(url)
+    if (domain.count('-')):
+        return 1
+    else:
+        return -1
+
+
+def sub_domain(url):
+    subDomain, domain, suffix = extract(url)
+    if (subDomain.count('.') == 0):
+        return -1
+    elif (subDomain.count('.') == 1):
+        return 0
+    else:
+        return 1
+
+
+def SSLfinal_State(url):
+    try:
+        # check wheather contains https
+        if (regex.search('^https', url)):
+            usehttps = 1
+        else:
+            usehttps = 0
+        # getting the certificate issuer to later compare with trusted issuer
+        # getting host name
+        subDomain, domain, suffix = extract(url)
+        host_name = domain + "." + suffix
+        context = ssl.create_default_context()
+        sct = context.wrap_socket(socket.socket(), server_hostname=host_name)
+        sct.connect((host_name, 443))
+        certificate = sct.getpeercert()
+        issuer = dict(x[0] for x in certificate['issuer'])
+        certificate_Auth = str(issuer['commonName'])
+        certificate_Auth = certificate_Auth.split()
+        if (certificate_Auth[0] == "Network" or certificate_Auth == "Deutsche"):
+            certificate_Auth = certificate_Auth[0] + " " + certificate_Auth[1]
+        else:
+            certificate_Auth = certificate_Auth[0]
+        trusted_Auth = ['Comodo', 'Symantec', 'GoDaddy', 'GlobalSign', 'DigiCert', 'StartCom', 'Entrust', 'Verizon',
+                        'Trustwave', 'Unizeto', 'Buypass', 'QuoVadis', 'Deutsche Telekom', 'Network Solutions',
+                        'SwissSign', 'IdenTrust', 'Secom', 'TWCA', 'GeoTrust', 'Thawte', 'Doster', 'VeriSign']
+        # getting age of certificate
+        startingDate = str(certificate['notBefore'])
+        endingDate = str(certificate['notAfter'])
+        startingYear = int(startingDate.split()[3])
+        endingYear = int(endingDate.split()[3])
+        Age_of_certificate = endingYear - startingYear
+
+        # checking final conditions
+        if ((usehttps == 1) and (certificate_Auth in trusted_Auth) and (Age_of_certificate >= 1)):
+            return -1  # legitimate
+        elif ((usehttps == 1) and (certificate_Auth not in trusted_Auth)):
+            return 0  # suspicious
+        else:
+            return 1  # phishing
+
+    except Exception as e:
+
+        return 1
+
+
+def domain_registration(URL):
+    if not URL :
         return 1
     try:
-        creation_date = domain_object.creation_date
-        expiration_date = domain_object.expiration_date
+        with urlopen(URL) as f:
+            s = dict(f.getheaders())['Set-Cookie'].split(";")
+            expire = ""
+            for i in s:
+                if "Expires" in i:
+                    expire = i.split("=")[-1][5:16]
+
+            expiration_date = datetime.strptime(expire, '%d-%b-%Y').date()
+
+            today = datetime.today().date()
+            end = abs((expiration_date - today).days)
+            if ((end / 30) < 36):
+                end = 0
+            else:
+                end = 1
+            return end
+
     except:
+        print("Domain Registration Error")
         return 1
-        
-    if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
-        try:
-            creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
-            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
-        except:
-            return 1
-    if ((expiration_date is None) or (creation_date is None)):
-        return 1
-    elif ((type(expiration_date) is list) or (type(creation_date) is list)):
-        return 1
-    else:
-        ageofdomain = abs((expiration_date - creation_date).days)
-        if ((ageofdomain/30) < 6):
-            age = 1
-        else:
-            age = 0
-    return age
 
-"""#### **End Period of Domain??????????**
-
-This feature can be extracted from WHOIS database. For this feature, the remaining domain time is calculated by finding the different between expiration time & current time. The end period considered for the legitimate domain is 6 months or less  for this project. 
-
-If end period of domain > 6 months, the vlaue of this feature is 1 (phishing) else 0 (legitimate).
 """
-
-# 14.End time of domain: The difference between termination time and current time (Domain_End) 
-def domainEnd(domain_object):
-    if domain_object==None:
-        return 1
+def domain_registration(url):
     try:
-        expiration_date = domain_object.expiration_date
-    except:
-        return 1
-    if isinstance(expiration_date,str):
-        try:
-            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
-        except:
+        w = whois.whois(url)
+        updated = w.updated_date
+        exp = w.expiration_date
+        length = (exp[0] - updated[0]).days
+        if (length <= 365):
             return 1
-    if (expiration_date is None):
-        return 1
-    elif (type(expiration_date) is list):
-        return 1
-    else:
-        today = datetime.now()
-        end = abs((expiration_date - today).days)
-        if ((end/30) < 6):
-            end = 0
         else:
-            end = 1
-    return end
+            return -1
+    except:
+        return 0"""
 
-"""## **3.HTML and JavaScript based Features**
 
-Many features can be extracted that come under this category. Out of them, below mentioned were considered for this project.
+def favicon(url):
+    # ongoing
+    return 0
 
-*   IFrame Redirection
-*   Status Bar Customization
-*   Disabling Right Click
-*   Website Forwarding
 
-Each of these features are explained and the coded below:
-"""
-# importing required packages for this section
-import requests
+def port(url):
+    # ongoing
+    return 0
 
-"""### **IFrame Redirection**
 
-IFrame is an HTML tag used to display an additional webpage into one that is currently shown. Phishers can make use of the “iframe” tag and make it invisible i.e. without frame borders. In this regard, phishers make use of the “frameBorder” attribute which causes the browser to render a visual delineation. 
-
-If the iframe is empty or repsonse is not found then, the value assigned to this feature is 1 (phishing) or else 0 (legitimate).
-"""
-
-# 15. IFrame Redirection (iFrame)
-def iframe(response):
-    if response == "":
+def https_token(url):
+    subDomain, domain, suffix = extract(url)
+    host = subDomain + '.' + domain + '.' + suffix
+    if (host.count('https')):  # attacker can trick by putting https in domain part
         return 1
     else:
-        if re.findall(r"[<iframe>|<frameBorder>]", response.text):
+        return -1
+
+
+def request_url(url):
+    try:
+        subDomain, domain, suffix = extract(url)
+        websiteDomain = domain
+
+        opener = urllib.request.urlopen(url).read()
+        soup = BeautifulSoup(opener, 'lxml')
+        imgs = soup.findAll('img', src=True)
+        total = len(imgs)
+
+        linked_to_same = 0
+        avg = 0
+        for image in imgs:
+            subDomain, domain, suffix = extract(image['src'])
+            imageDomain = domain
+            if (websiteDomain == imageDomain or imageDomain == ''):
+                linked_to_same = linked_to_same + 1
+        vids = soup.findAll('video', src=True)
+        total = total + len(vids)
+
+        for video in vids:
+            subDomain, domain, suffix = extract(video['src'])
+            vidDomain = domain
+            if (websiteDomain == vidDomain or vidDomain == ''):
+                linked_to_same = linked_to_same + 1
+        linked_outside = total - linked_to_same
+        if (total != 0):
+            avg = linked_outside / total
+
+        if (avg < 0.22):
+            return -1
+        elif (0.22 <= avg <= 0.61):
             return 0
         else:
             return 1
-"""### **Status Bar Customization**
+    except:
+        return 0
 
-Phishers may use JavaScript to show a fake URL in the status bar to users. To extract this feature, we must dig-out the webpage source code, particularly the “onMouseOver” event, and check if it makes any changes on the status bar
 
-If the response is empty or onmouseover is found then, the value assigned to this feature is 1 (phishing) or else 0 (legitimate).
-"""
+def url_of_anchor(url):
+    try:
+        subDomain, domain, suffix = extract(url)
+        websiteDomain = domain
 
-# 16.Checks the effect of mouse over on status bar (Mouse_Over)
-def mouseOver(response): 
-    if response == "" :
+        opener = urllib.request.urlopen(url).read()
+        soup = BeautifulSoup(opener, 'lxml')
+        anchors = soup.findAll('a', href=True)
+        total = len(anchors)
+        linked_to_same = 0
+        avg = 0
+        for anchor in anchors:
+            subDomain, domain, suffix = extract(anchor['href'])
+            anchorDomain = domain
+            if (websiteDomain == anchorDomain or anchorDomain == ''):
+                linked_to_same = linked_to_same + 1
+        linked_outside = total - linked_to_same
+        if (total != 0):
+            avg = linked_outside / total
+
+        if (avg < 0.31):
+            return -1
+        elif (0.31 <= avg <= 0.67):
+            return 0
+        else:
+            return 1
+    except:
+        return 0
+
+
+def Links_in_tags(url):
+    try:
+        opener = urllib.request.urlopen(url).read()
+        soup = BeautifulSoup(opener, 'lxml')
+
+        no_of_meta = 0
+        no_of_link = 0
+        no_of_script = 0
+        anchors = 0
+        avg = 0
+        for meta in soup.find_all('meta'):
+            no_of_meta = no_of_meta + 1
+        for link in soup.find_all('link'):
+            no_of_link = no_of_link + 1
+        for script in soup.find_all('script'):
+            no_of_script = no_of_script + 1
+        for anchor in soup.find_all('a'):
+            anchors = anchors + 1
+        total = no_of_meta + no_of_link + no_of_script + anchors
+        tags = no_of_meta + no_of_link + no_of_script
+        if (total != 0):
+            avg = tags / total
+
+        if (avg < 0.25):
+            return -1
+        elif (0.25 <= avg <= 0.81):
+            return 0
+        else:
+            return 1
+    except:
+        return 0
+
+
+def sfh(url):
+    # ongoing
+    return 0
+
+
+def email_submit(url):
+    try:
+        opener = urllib.request.urlopen(url).read()
+        soup = BeautifulSoup(opener, 'lxml')
+        if (soup.find('mailto:')):
+            return 1
+        else:
+            return -1
+    except:
+        return 0
+
+
+def abnormal_url(url):
+    # ongoing
+    return 0
+
+
+def redirect(url):
+    # ongoing
+    return 0
+
+
+def on_mouseover(url):
+    try:
+        response = requests.get(url)
+    except:
+        response = ""
+    if response == "":
         return 1
     else:
         if re.findall("<script>.+onmouseover.+</script>", response.text):
@@ -236,15 +332,12 @@ def mouseOver(response):
         else:
             return 0
 
-"""### **Disabling Right Click**
+def rightClick(url):
+    try:
+        response = requests.get(url)
+    except:
+        response = ""
 
-Phishers use JavaScript to disable the right-click function, so that users cannot view and save the webpage source code. This feature is treated exactly as “Using onMouseOver to hide the Link”. Nonetheless, for this feature, we will search for event “event.button==2” in the webpage source code and check if the right click is disabled.
-
-If the response is empty or onmouseover is not found then, the value assigned to this feature is 1 (phishing) or else 0 (legitimate).
-"""
-
-# 17.Checks the status of the right click attribute (Right_Click)
-def rightClick(response):
     if response == "":
         return 1
     else:
@@ -253,12 +346,12 @@ def rightClick(response):
         else:
             return 1
 
-"""### ** Website Forwarding**
-The fine line that distinguishes phishing websites from legitimate ones is how many times a website has been redirected. In our dataset, we find that legitimate websites have been redirected one time max. On the other hand, phishing websites containing this feature have been redirected at least 4 times.
-"""
+def popup(url):
+    try:
+        response = requests.get(url)
+    except:
+        response = ""
 
-# 18.Checks the number of forwardings (Web_Forwards)    
-def forwarding(response):
     if response == "":
         return 1
     else:
@@ -267,14 +360,97 @@ def forwarding(response):
         else:
             return 1
 
-def extractFeatures(url):
+
+def iframe(url):
+    # ongoing
+    return 0
+
+
+
+def age_of_domain(URL):
+    if URL == None:
+        return 1
     try:
-        response = requests.get(url)
+        from htmldate import find_date
+        creation_date = find_date(URL)
+
+        with urlopen(URL) as f:
+            s=dict(f.getheaders())['Set-Cookie'].split(";")
+            expire=""
+            for i in s:
+                if "Expires" in i:
+                    expire = i.split("=")[-1][5:16]
+
+            from datetime import datetime
+
+            expire_date = datetime.strptime(expire, '%d-%b-%Y').date()
+            creation_date = datetime.strptime(creation_date, '%Y-%m-%d').date()
+
+            delta = expire_date - creation_date
+
+            if delta.days<180:
+                return 1
+
+            return 0
+
     except:
-        response = ""
-        
-        
-    return [getDomain(url) , havingIp(url) , havingAtSign(url) , urlLengthFactor(url) ,getDepth(url) , reDirection(url) , httpDomain(url) ,tinyURL(url) , prefixSuffix(url) , is_registered(getDomain(url)) , domainAge(domain_object(getDomain(url))) , domainEnd(domain_object(getDomain(url))) , iframe(response) , mouseOver(response) , rightClick(response) , forwarding(response) ]
+        return 1
 
 
+"""def age_of_domain(url):
+    try:
+        w = whois.whois(url)
+        start_date = w.creation_date
+        current_date = datetime.datetime.now()
+        age = (current_date - start_date[0]).days
+        if (age >= 180):
+            return -1
+        else:
+            return 1
+    except Exception as e:
+        print(e)
+        return 0"""
+
+
+def dns(url):
+    # ongoing
+    return 0
+
+
+def web_traffic(url):
+    # ongoing
+    return 0
+
+
+def page_rank(url):
+    # ongoing
+    return 0
+
+
+def google_index(url):
+    # ongoing
+    return 0
+
+
+def links_pointing(url):
+    # ongoing
+    return 0
+
+
+def statistical(url):
+    # ongoing
+    return 0
+
+
+def main(url):
+    check = [[url_having_ip(url), url_length(url), url_short(url), having_at_symbol(url),
+              doubleSlash(url), prefix_suffix(url), sub_domain(url), SSLfinal_State(url),
+              domain_registration(url), favicon(url), port(url), https_token(url), request_url(url),
+              url_of_anchor(url), Links_in_tags(url), sfh(url), email_submit(url), abnormal_url(url),
+              redirect(url), on_mouseover(url), rightClick(url), popup(url), iframe(url),
+              age_of_domain(url), dns(url), web_traffic(url), page_rank(url), google_index(url),
+              links_pointing(url), statistical(url)]]
+
+    print(check)
+    return check
 

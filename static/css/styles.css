@@ -130,6 +130,28 @@ label {
     position: relative;
 	z-index: 1;
 	}
+.safe-bg {
+	background-color: #a5b6bf;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../img/safe.jpg");
+	background-position: 55% 55%;
+	height: 100%;
+    overflow: hidden;
+    width: 100%;
+    background-size: cover;
+    position: relative;
+	z-index: 1;
+	}
+.unsafe-bg {
+	background-color: #a5b6bf;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../img/unsafe.jpg");
+	background-position: 55% 55%;
+	height: 100%;
+    overflow: hidden;
+    width: 100%;
+    background-size: cover;
+    position: relative;
+	z-index: 1;
+	}
 .overlay {
 	background-color: rgba(33, 50, 90, 0.3);
 	display: block;
@@ -1275,7 +1297,7 @@ body.mobile-view .center-content header {
 	float: right;
 	}
 .chosen-results{
-	color: #000000;
+	color: #ff0000;
 	}
 #list_brand_chosen ul{
 	padding: 12px 0 12px 12px;

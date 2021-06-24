@@ -10,7 +10,7 @@
 <!--======================== CSS & Fonts ============================-->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="css/styles.css" type="text/css" />
+<link rel="stylesheet" href="{{ url_for('static', filename = '/css/styles.css') }}" type="text/css" />
 
 
 </head>
@@ -18,13 +18,12 @@
     <div class="main-bg">
         <section class="center-content">
             <header>
-                <h1 class="banner">
+                <h1 class="banner" style="color:#3498db">
                     PHISHING DETECTION TOOL
                 </h1>
             </header>
             <div class="search-engine-wrapper">
-                <form id="search-form" autocomplete="off" action="http://localhost:5000/predict" method="POST"> <!--action="search-engine-process.php">-->
-                    <fieldset>
+                <form id="search-form" autocomplete="off" action="http://localhost:8000/predict" method="POST"> <!--action="search-engine-process.php">-->
                         <button class="search-btn large-scr" type="submit">Check</button>
                         <div class="search-input-wrapper">
                             <input class="search-input" type="text" name="url" id="recherche" placeholder="Enter a URL to check for phishing" />
@@ -34,9 +33,8 @@
                         </div>
                         <button class="search-btn small-scr" type="submit">Check</button>
                         <span class="arrow"></span>
-                    </div>
                 </form>
-            </div>
+                </div>
         </section>
 
 

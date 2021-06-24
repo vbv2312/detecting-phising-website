@@ -6,9 +6,8 @@ from sklearn.model_selection import train_test_split
 
 
 def logistic(x_train, x_test, y_train, y_test):
-    classifier = LogisticRegression(solver='liblinear')
+    classifier = LogisticRegression(random_state=0,solver='liblinear')
     classifier.fit(x_train, y_train)
-
     start = time.time()
     y_predictions = classifier.predict(x_test)
     stop = time.time()
@@ -28,5 +27,7 @@ def logistic(x_train, x_test, y_train, y_test):
     f.close()
 
 def models(x, y):
+
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
     logistic(x_train, x_test, y_train, y_test)
+    print("Done")

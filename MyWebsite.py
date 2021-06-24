@@ -1,7 +1,16 @@
 from flask import Flask, redirect, render_template, url_for, request
 import Predictor
-
 app = Flask(__name__)
+
+
+@app.route('/static/styles.css')
+def cssStyle():
+    print("CSS")
+    return "static/styles.css"
+
+@app.route('/')
+def homePage():
+    return render_template('/index.html')
 
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
@@ -10,20 +19,15 @@ def predict():
     else:
         myurl = request.args.get('url')
 
-    print(myurl)
-    result1,result2 = Predictor.predict(myurl)
-    if result1 == 0:
-        ans1 = "Legitimate"
-    else:
-        ans1 = "Phishing"
+    result1, result2 ,result3= Predictor.predict(myurl)
 
-    if result2 == 0:
-        ans2 = "Legitimate"
-    else:
-        ans2 = "Phishing"
+    print(myurl, result1, result2, result3)
 
-    return "<div> <h1>Results</h1><h2>MY URL " +myurl+ " is :</h2><h2> Acc. to Model 1 :" + ans1 +"</h2><h2> Acc. to Model 2 :" + ans2 +"</h2></div>"
+    if result1 == -1 and  result2 == -1 and result3 == -1:
+        return render_template('/results_safe.html', url=myurl)
+    else:
+        return render_template('/results_unsafe.html', url=myurl)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
